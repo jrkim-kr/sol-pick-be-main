@@ -240,4 +240,24 @@ public class GameService {
                         .build())
                 .collect(Collectors.toList());
     }
+
+    /**
+     * 유저의 완성된 레시피 목록 조회
+     * @param userId 유저 ID
+     * @return 완성된 레시피 목록
+     */
+    public List<CompletedRecipeDTO> getCompletedRecipes(Integer userId) {
+        List<CompletedRecipe> completedRecipes =
+                completedRecipeRepository.findByUserIdOrderByCompletionDateDesc(userId);
+
+        return completedRecipes.stream()
+                .map(recipe -> CompletedRecipeDTO.builder()
+                        .id(recipe.getId())
+                        .userId(recipe.getUserId())
+                        .recipeId(recipe.getRecipeId())
+                        .pointAmount(recipe.getPointAmount())
+                        .completionDate(recipe.getCompletionDate())
+                        .build())
+                .collect(Collectors.toList());
+    }
 }
